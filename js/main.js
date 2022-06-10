@@ -1,4 +1,4 @@
-import apiKey from "./config/keyApi.js";
+//import apiKey from "./config/keyApi.js";
 
 const moviesContainer = document.querySelector(".movies");
 const input = document.querySelector("input");
@@ -42,14 +42,14 @@ function cleanAllMovies() {
 }
 
 async function searchMovieByName(title) {
-  const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${title}&language=pt-BR&page=1`;
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=0b315a483ddd1a98f546149981faecda&query=${title}&language=pt-BR&page=1`;
   const fetchResponse = await fetch(url);
   const { results } = await fetchResponse.json();
   return results;
 }
 
 async function getPopularMovies() {
-  const url = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&page=1`;
+  const url = `https://api.themoviedb.org/3/movie/popular?api_key=0b315a483ddd1a98f546149981faecda&language=pt-BR&page=1`;
   const fetchResponse = await fetch(url);
   const { results } = await fetchResponse.json();
   return results;
