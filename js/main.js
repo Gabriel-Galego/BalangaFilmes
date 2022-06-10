@@ -1,5 +1,3 @@
-//import apiKey from "./config/keyApi.js";
-
 const moviesContainer = document.querySelector(".movies");
 const input = document.querySelector("input");
 const searchButton = document.querySelector(".searchIcon");
