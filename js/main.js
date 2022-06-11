@@ -1,4 +1,4 @@
-import apiKey from "./config/keyApi.js";
+import apiKey from "../config/keyApi.js";
 
 const moviesContainer = document.querySelector(".movies");
 const input = document.querySelector("input");
