@@ -53,6 +53,14 @@ async function getPopularMovies() {
   return results;
 }
 
+async function getStreaming(movie_id) {
+  const url = `https://api.themoviedb.org/3/movie/${movie_id}/watch/providers?api_key=0b315a483ddd1a98f546149981faecda&watch_region=BR`;
+  const fetchResponse = await fetch(url)
+    .then((response) => response.json())
+    .catch((error) => console.log(error));
+  return fetchResponse;
+}
+
 function favoriteButtonPressed(event, movie) {
   const favoriteState = {
     favorited: "images/heart-fill.svg",
@@ -86,6 +94,27 @@ function checkMovieIsFavorited(id) {
   return movies.find((movie) => movie.id == id);
 }
 
+function streamButtonPressed(name) {
+  if (name == "HBO Max") {
+    const url = "https://play.hbomax.com/";
+    window.open(url);
+  }
+  if (name == "Netflix") {
+    const url = "https://www.netflix.com/br/";
+    window.open(url);
+  }
+  if (name == "Amazon Prime") {
+    const url = "https://www.primevideo.com/";
+    window.open(url);
+  }
+  if (name == "Disney Plus") {
+    const url = "https://www.disneyplus.com/";
+    window.open(url);
+  }
+
+  return;
+}
+
 function removeFromLocalStorage(id) {
   const movies = getFavoriteMovies() || [];
   const findMovie = movies.find((movie) => movie.id == id);
@@ -102,9 +131,16 @@ window.onload = function () {
   getAllPopularMovies();
 };
 
-function renderMovie(movie) {
+async function renderMovie(movie) {
   const { id, title, poster_path, vote_average, release_date, overview } =
     movie;
+
+  const streaming = await getStreaming(id);
+  const { results } = streaming;
+  const { BR } = results;
+  const { flatrate } = BR;
+  const { provider_name, logo_path, display_priority } = flatrate[0];
+
   const isFavorited = checkMovieIsFavorited(id);
 
   const year = new Date(release_date).getFullYear();
@@ -165,6 +201,20 @@ function renderMovie(movie) {
   favorite.appendChild(favoriteImage);
   favorite.appendChild(favoriteText);
   informations.appendChild(favorite);
+
+  const stream = document.createElement("div");
+  stream.classList.add("stream");
+  const stremaName = document.createElement("span");
+  const streamImage = document.createElement("img");
+  streamImage.src = `https://image.tmdb.org/t/p/w500${logo_path}`;
+  streamImage.classList.add("stream-image");
+  streamImage.addEventListener("click", (event) =>
+    streamButtonPressed(provider_name)
+  );
+  stremaName.textContent = provider_name;
+  stream.appendChild(streamImage);
+  stream.appendChild(stremaName);
+  informations.appendChild(stream);
 
   const movieDescriptionContainer = document.createElement("div");
   movieDescriptionContainer.classList.add("movie-description");
